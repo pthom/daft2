@@ -14,11 +14,13 @@ add_subdirectory(external/SDL)
 # Build C++ library
 add_library(daft2 STATIC src/daft2/hello.cpp)
 target_include_directories(daft2 PUBLIC src/daft2)
+
+# Link SDL
 if (EMSCRIPTEN)
-    # target_compile_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sMAX_WEBGL_VERSION=2")
-    # target_link_options(DaftLib PUBLIC "-sMIN_WEBGL_VERSION=2")    
+    # target_compile_options(daft2 PUBLIC "-sUSE_SDL=2")
+    # target_link_options(daft2 PUBLIC "-sUSE_SDL=2")
+    target_link_options(daft2 PUBLIC "-sMAX_WEBGL_VERSION=2")
+    target_link_options(daft2 PUBLIC "-sMIN_WEBGL_VERSION=2")    
 endif()
 target_link_libraries(daft2 PRIVATE SDL2-static)
 
