@@ -7,6 +7,8 @@ add_compile_options(--use-port=contrib.glfw3)
 add_link_options(--use-port=contrib.glfw3 "-sLINKABLE")
 
 # Compile SDL
+set(SDL_STATIC ON CACHE BOOL "Build SDL2 as a static library")  # Force static build (this is probably not necessary, since it is the default)
+set(SDL_SHARED OFF CACHE BOOL "Build SDL2 as a shared library")
 add_subdirectory(external/SDL)
 
 # Build C++ library
@@ -18,7 +20,7 @@ if (EMSCRIPTEN)
     # target_link_options(DaftLib PUBLIC "-sMAX_WEBGL_VERSION=2")
     # target_link_options(DaftLib PUBLIC "-sMIN_WEBGL_VERSION=2")    
 endif()
-
+target_link_libraries(daft2 PRIVATE SDL2-static)
 
 # Build bindings
 find_package(Python 3.8 REQUIRED COMPONENTS Interpreter Development.Module)
