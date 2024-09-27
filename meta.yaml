@@ -1,0 +1,7 @@
+package:
+  name: daft2
+  version: 0.0.1
+  top-level:
+    - daft2
+source:
+  path: repo_daft2

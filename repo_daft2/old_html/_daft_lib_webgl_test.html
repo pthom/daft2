@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Direct WebGL Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        canvas { width: 600px; height: 400px; border: 1px solid black; }
+    </style>
+</head>
+<body>
+    <h2>WebGL Context Creation Test</h2>
+    <canvas id="glCanvas"></canvas>
+    <script>
+        function setupWebGL() {
+            const canvas = document.getElementById('glCanvas');
+            const gl = canvas.getContext('webgl2', {
+                depth: true,
+                stencil: true,
+                antialias: true,
+                preserveDrawingBuffer: false
+            });
+
+            if (!gl) {
+                alert('Unable to initialize WebGL. Your browser may not support it.');
+                return;
+            }
+
+            // Output information about the context
+            console.log('WebGL 2 context created successfully.');
+            console.log('Depth buffer bit depth:', gl.getParameter(gl.DEPTH_BITS));
+            console.log('Stencil buffer bit depth:', gl.getParameter(gl.STENCIL_BITS));
+
+            // Clear the canvas with specified clear color
+            gl.clearColor(0.0, 0.5, 0.5, 1.0); // Cyan background to distinguish it
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+
+            // Check if the shaders are compilable
+            const vertexShaderSource = `#version 300 es
+                in vec2 position;
+                void main() {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }`;
+
+            const fragmentShaderSource = `#version 300 es
+                precision mediump float;
+                out vec4 fragColor;
+                void main() {
+                    fragColor = vec4(1.0, 0.0, 0.0, 1.0); // Red color
+                }`;
+
+            const vertShader = gl.createShader(gl.VERTEX_SHADER);
+            gl.shaderSource(vertShader, vertexShaderSource);
+            gl.compileShader(vertShader);
+
+            const fragShader = gl.createShader(gl.FRAGMENT_SHADER);
+            gl.shaderSource(fragShader, fragmentShaderSource);
+            gl.compileShader(fragShader);
+
+            if (!gl.getShaderParameter(vertShader, gl.COMPILE_STATUS)) {
+                console.error('An error occurred compiling the vertex shaders: ' + gl.getShaderInfoLog(vertShader));
+            }
+
+            if (!gl.getShaderParameter(fragShader, gl.COMPILE_STATUS)) {
+                console.error('An error occurred compiling the fragment shaders: ' + gl.getShaderInfoLog(fragShader));
+            }
+        }
+
+        window.onload = setupWebGL;
+    </script>
+</body>
+</html>
