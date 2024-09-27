@@ -7,6 +7,6 @@ source:
   path: repo_daft2
 build:
   cflags: |
-    -lglfw3
+    --use-port=contrib.glfw3
   ldflags: |
-    -lglfw3
+    --use-port=contrib.glfw3

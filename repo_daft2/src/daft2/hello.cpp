@@ -124,6 +124,7 @@ void hello()
         printf("Failed to initialize GLFW\n");
         return;
     }
+    return;
 
   // no OpenGL (use canvas2D)
   printf("About to call glfwWindowHint\n");
