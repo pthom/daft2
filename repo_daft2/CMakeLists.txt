@@ -3,20 +3,19 @@ project(litgen_template VERSION "0.0.1")
 set(CMAKE_CXX_STANDARD 20)
 
 
+# Add glf support via emscripten
+# See https://github.com/pongasoft/emscripten-glfw/tree/master/examples/example_hi_dpi
 add_compile_options(--use-port=contrib.glfw3)
-add_link_options(--use-port=contrib.glfw3 "-sLINKABLE")
-
-# Compile SDL
-# add_subdirectory(external/SDL)
+add_link_options(--use-port=contrib.glfw3)
 
 # Build C++ library
 add_library(daft2 STATIC src/daft2/hello.cpp)
 target_include_directories(daft2 PUBLIC src/daft2)
 if (EMSCRIPTEN)
-    # target_compile_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sMAX_WEBGL_VERSION=2")
-    # target_link_options(DaftLib PUBLIC "-sMIN_WEBGL_VERSION=2")    
+    target_link_options(daft2 PUBLIC "-sMAX_WEBGL_VERSION=2")
+    target_link_options(daft2 PUBLIC "-sMIN_WEBGL_VERSION=2")    
+    # target_compile_options(daft2 PUBLIC "-sUSE_SDL=2")
+    # target_link_options(daft2 PUBLIC "-sUSE_SDL=2")
 endif()
 
 

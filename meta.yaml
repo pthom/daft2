@@ -5,3 +5,8 @@ package:
     - daft2
 source:
   path: repo_daft2
+build:
+  cflags: |
+    -lglfw3
+  ldflags: |
+    -lglfw3
