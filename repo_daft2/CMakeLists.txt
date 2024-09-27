@@ -3,8 +3,6 @@ project(litgen_template VERSION "0.0.1")
 set(CMAKE_CXX_STANDARD 20)
 
 
-add_compile_options(--use-port=contrib.glfw3)
-add_link_options(--use-port=contrib.glfw3 "-sLINKABLE")
 
 # Compile SDL
 # add_subdirectory(external/SDL)
@@ -13,10 +11,10 @@ add_link_options(--use-port=contrib.glfw3 "-sLINKABLE")
 add_library(daft2 STATIC src/daft2/hello.cpp)
 target_include_directories(daft2 PUBLIC src/daft2)
 if (EMSCRIPTEN)
-    # target_compile_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sMAX_WEBGL_VERSION=2")
-    # target_link_options(DaftLib PUBLIC "-sMIN_WEBGL_VERSION=2")    
+    target_compile_options(daft2 PUBLIC "-sUSE_GLFW=3")
+    target_link_options(daft2 PUBLIC "-sUSE_GLFW=3")
+    target_link_options(daft2 PUBLIC "-sMAX_WEBGL_VERSION=2")
+    target_link_options(daft2 PUBLIC "-sMIN_WEBGL_VERSION=2")    
 endif()
 
 
