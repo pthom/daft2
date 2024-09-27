@@ -7,7 +7,7 @@ add_compile_options(--use-port=contrib.glfw3)
 add_link_options(--use-port=contrib.glfw3 "-sLINKABLE")
 
 # Compile SDL
-# add_subdirectory(external/SDL)
+add_subdirectory(external/SDL)
 
 # Build C++ library
 add_library(daft2 STATIC src/daft2/hello.cpp)
