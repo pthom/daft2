@@ -3,22 +3,15 @@ project(litgen_template VERSION "0.0.1")
 set(CMAKE_CXX_STANDARD 20)
 
 
-add_compile_options(--use-port=contrib.glfw3)
-add_link_options(--use-port=contrib.glfw3 "-sLINKABLE")
-
-# Compile SDL
-# add_subdirectory(external/SDL)
+# Add emscripten-glfw
+# This is a port of the main API of GLFW to Emscripten, using js
+add_subdirectory(external/emscripten-glfw)  # will publish a target called glfw3
 
 # Build C++ library
-add_library(daft2 STATIC src/daft2/hello.cpp)
+add_library(daft2 STATIC src/daft2/hello.cpp src/daft2/glfw_js_load.cpp src/daft2/glfw_js_rawstr.cpp)
 target_include_directories(daft2 PUBLIC src/daft2)
-if (EMSCRIPTEN)
-    # target_compile_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sMAX_WEBGL_VERSION=2")
-    # target_link_options(DaftLib PUBLIC "-sMIN_WEBGL_VERSION=2")    
-endif()
-
+target_link_options(daft2 PUBLIC "-sMAX_WEBGL_VERSION=2" "-sMIN_WEBGL_VERSION=2")
+target_link_libraries(daft2 PUBLIC glfw3)
 
 # Build bindings
 find_package(Python 3.8 REQUIRED COMPONENTS Interpreter Development.Module)

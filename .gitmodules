@@ -1,0 +1,3 @@
+[submodule "repo_daft2/external/emscripten-glfw"]
+	path = repo_daft2/external/emscripten-glfw
+	url = https://github.com/pongasoft/emscripten-glfw.git
