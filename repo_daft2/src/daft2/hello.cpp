@@ -9,60 +9,38 @@ void consoleErrorHandler(int iErrorCode, char const *iErrorMessage)
 
 void hello()
 {
-    std::cout << "Hello, World!" << std::endl;
-
-    std::cout << "About to set error callback" << std::endl;
     glfwSetErrorCallback(consoleErrorHandler);
-    std::cout << "Error callback set" << std::endl;
-
-    std::cout << "About to initialize GLFW" << std::endl;
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
         return;
     }
-    std::cout << "GLFW initialized" << std::endl;
 
-    // Set GLFW window hints for WebGL
+    // Set GLFW window hints for WebGL2
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // WebGL 2.0
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // OpenGL ES 3.0 corresponds to WebGL2
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    //glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Initially hidden
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Optional, for forward compatibility
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Use core profile
+    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Initially hidden
 
-    // print the version on the console
-    printf("%s\n", glfwGetVersionString());
-
-    std::cout << "About to create window" << std::endl;
-    GLFWwindow* window = glfwCreateWindow(600, 400, "Hello GLFW", nullptr, nullptr);
+    // Optional: Enable additional hints
+    glfwWindowHint(GLFW_SAMPLES, 4); // For anti-aliasing (antialiasing was false earlier)
+    glfwWindowHint(GLFW_DEPTH_BITS, 24);
+    glfwWindowHint(GLFW_STENCIL_BITS, 8);
+    glfwWindowHint(GLFW_ALPHA_BITS, 8);
+    
+    GLFWwindow* window = glfwCreateWindow(600, 400, "Test Window", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
-
+        //const char* description;
+        //int code = glfwGetError(&description);
+        //std::cerr << "GLFW Error (" << code << "): " << (description ? description : "No description") << std::endl;
         glfwTerminate();
         return;
-    } 
-    std::cout << "Window created" << std::endl;
-
-    std::cout << "About to make context current" << std::endl;
-    glfwMakeContextCurrent(window);
-    std::cout << "Context made current" << std::endl;
-
-    // Optional: Show the window if needed
-    //glfwShowWindow(window);
-
-    /*
-    // Main loop
-    while (!glfwWindowShouldClose(window)) {
-        // Render here
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
     }
-    */
 
-    std::cout << "About to destroy window" << std::endl;
+    std::cout << "Window created successfully!" << std::endl;
+
     glfwDestroyWindow(window);
-    std::cout << "Window destroyed" << std::endl;
-    std::cout << "About to terminate GLFW" << std::endl;
-    glfwTerminate();    
-    std::cout << "GLFW terminated" << std::endl;
-}
+    glfwTerminate();
+  }
