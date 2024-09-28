@@ -139,7 +139,9 @@ main()
             pyodide._api._skip_unwind_fatal_error = true;
 
             await pyodide.loadPackage(["daft2"], { checkIntegrity: false })
-            pyodide.canvas.setCanvas3D(canvas);  // setCanvas3D is an alias to setCanvas2D
+
+            console.log("Canvas: ", canvas);
+            pyodide.canvas.setCanvas2D(canvas);  // setCanvas3D is an alias to setCanvas2D
 
             pyodide.runPythonAsync(python_code);
         }
