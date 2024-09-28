@@ -11,8 +11,11 @@ void hello()
 {
     std::cout << "Hello, World!" << std::endl;
 
-    // set a callback for errors otherwise if there is a problem, we won't know
-    glfwSetErrorCallback(consoleErrorHandler);
+    //glfwSetErrorCallback(consoleErrorHandler);
+
+    std::cout << "About to initialize GLFW" << std::endl;
+    glfwInit();
+    std::cout << "GLFW initialized" << std::endl;
 
     // print the version on the console
     printf("%s\n", glfwGetVersionString());
