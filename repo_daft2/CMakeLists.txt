@@ -2,22 +2,21 @@ cmake_minimum_required(VERSION 3.15...3.27)
 project(litgen_template VERSION "0.0.1")
 set(CMAKE_CXX_STANDARD 20)
 
-
-add_compile_options(--use-port=contrib.glfw3)
-add_link_options(--use-port=contrib.glfw3 "-sLINKABLE")
-
-# Compile SDL
-# add_subdirectory(external/SDL)
+# Define Emscripten and WebGL2 flags
+set(EMSCRIPTEN_FLAGS
+  "-sUSE_SDL=2"
+  "-sMIN_WEBGL_VERSION=2"
+  "-sMAX_WEBGL_VERSION=2"
+  "-sFULL_ES3=1"
+  #"-sALLOW_MEMORY_GROWTH=1"
+  #"-O2"
+)
 
 # Build C++ library
 add_library(daft2 STATIC src/daft2/hello.cpp)
 target_include_directories(daft2 PUBLIC src/daft2)
-if (EMSCRIPTEN)
-    # target_compile_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sUSE_SDL=2")
-    # target_link_options(DaftLib PUBLIC "-sMAX_WEBGL_VERSION=2")
-    # target_link_options(DaftLib PUBLIC "-sMIN_WEBGL_VERSION=2")    
-endif()
+target_compile_options(daft2 PUBLIC ${EMSCRIPTEN_FLAGS})
+target_link_options(daft2 PUBLIC ${EMSCRIPTEN_FLAGS})
 
 
 # Build bindings
