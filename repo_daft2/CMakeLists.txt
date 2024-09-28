@@ -22,6 +22,10 @@ set(EMSCRIPTEN_FLAGS
 
 #find_package(SDL2 REQUIRED)
 
+# Add Hello ImGui
+add_subdirectory(external/hello_imgui)
+
+
 # Build C++ library
 add_library(daft2 STATIC src/daft2/hello.cpp)
 target_include_directories(daft2 PUBLIC src/daft2)
