@@ -5,3 +5,7 @@ package:
     - daft2
 source:
   path: repo_daft2
+build:
+  ldflags: |
+    -L$(WASM_LIBRARY_DIR)/lib
+    -lSDL2
