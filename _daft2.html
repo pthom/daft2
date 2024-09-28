@@ -44,12 +44,30 @@
         USE_WEBGL2 = true;
 
         python_code = `
+import asyncio
 import daft2
 
-async def main():
-    daft2.hello()
+# Initialize GLFW and OpenGL
+if not daft2.initialize():
+    print("Initialization failed.")
+    exit()
 
-main()          
+async def render_loop():
+    try:
+        while True:
+            daft2.render()
+            await asyncio.sleep(0)  # Yield control
+    except KeyboardInterrupt:
+        pass
+    finally:
+        daft2.terminateGLFW()
+
+# Start the rendering loop
+asyncio.create_task(render_loop())
+
+# Keep the Python program running
+await asyncio.Event().wait()
+
         `
 
         function get_webgl2_canvas() 
