@@ -45,11 +45,71 @@
 
         python_code = `
 import daft2
+from typing import Callable
+from pyodide.ffi import create_proxy
+import js
+import asyncio
 
-async def main():
-    daft2.hello()
+class AnimationLoop:
+    """
+    Manages a continuous animation loop using requestAnimationFrame.
+    Allows starting and stopping the loop gracefully.
+    """
+    
+    def __init__(self, render_fn: Callable[[], None]):
+        """
+        Initializes the AnimationLoop with a rendering function.
+        
+        Args:
+            render_fn (Callable[[], None]): The function to be called each frame for rendering.
+        """
+        self.render_fn = render_fn
+        self.stop_requested = False
+        self.main_loop_proxy = create_proxy(self.main_loop)
+    
+    def main_loop(self, timestamp):
+        """
+        The main loop function that gets called each animation frame.
+        
+        Args:
+            timestamp (float): The current time in milliseconds.
+        """
+        if self.stop_requested:
+            # Cleanup if necessary
+            self.main_loop_proxy.destroy()
+            return
+        
+        try:
+            self.render_fn()
+        except Exception as e:
+            js.console.error(f"Error during render: {e}")
+        
+        # Schedule the next frame
+        js.requestAnimationFrame(self.main_loop_proxy)
+    
+    def start(self):
+        """
+        Starts the animation loop.
+        """
+        self.stop_requested = False  # Ensure the loop isn't stopped
+        js.requestAnimationFrame(self.main_loop_proxy)
+    
+    def stop(self):
+        """
+        Requests the animation loop to stop.
+        """
+        self.stop_requested = True
 
-main()          
+        
+# Initialize the renderer
+daft2.init_renderer()
+
+# Create an instance of AnimationLoop with daft2.render as the rendering function
+animation_loop = AnimationLoop(daft2.render)
+
+# Start the animation loop
+animation_loop.start()
+
         `
 
         function get_webgl2_canvas() 
